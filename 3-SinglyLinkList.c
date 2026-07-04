@@ -35,16 +35,35 @@ Status ListInsert(LinkList l, int i, ElemType *e);
 Status ListDelete(LinkList l, int i);
 Status CreateList_H(LinkList *l, int n);
 Status CreateList_T(LinkList *l, int n);
+void MergeList(LinkList a, LinkList b, LinkList c);
 
 int main() {
-    LinkList l;
-    CreateList_R(&l, 1);
-    // 获取首元节点的数据
-    ElemType e;
-    GetElem(l, 1, &e);
-    // 打印首元节点
-    PrintElem(&e);
-    return 0;
+    // LinkList l;
+    // CreateList_R(&l, 1);
+    // // 获取首元节点的数据
+    // ElemType e;
+    // GetElem(l, 1, &e);
+    // // 打印首元节点
+    // PrintElem(&e);
+    // return 0;
+
+    LinkList a, b, c;
+    CreateList_T(&a, 1); CreateList_T(&b, 2); InitList(&c);
+    MergeList(a, b, c);
+    printf("[");
+
+    // 打印c的每个数据域
+    LNode *p = c -> next;
+    for (int i = 1; i <= ListLength(c); i++)
+    {
+        ElemType e = p -> data;
+        PrintElem(&e);
+        if (i != ListLength(c)) {
+            printf(",\n\n");
+        } else {printf("]\n");}       
+        p = p -> next;
+    }
+    return 0;   
 }
 
 // 函数定义
@@ -52,7 +71,7 @@ Status PrintElem(ElemType *e) {
     if (!e) {
         return ERROR;
     }
-    printf("ID: %s\nName: %s\nScare: %d\n", e->id, e->name, e->score);
+    printf("ID: %s\nName: %s\nScare: %d", e->id, e->name, e->score);
     return OK;
 }
 
@@ -272,4 +291,30 @@ Status CreateList_T(LinkList *l, int n) {
         i++;
     }
     return OK;
+}
+
+void MergeList(LinkList a, LinkList b, LinkList c) {
+    // 获取首元节点的地址
+    LNode *pa = a -> next, *pb = b -> next;
+    int pos = 1; // 记录插入位置
+    
+    while (pa && pb) {
+        int sa = pa -> data.score, sb = pb -> data.score;
+        ElemType ea = pa -> data, eb = pb -> data;
+        if (sa > sb) {
+            ListInsert(c, pos, &eb);
+            pb = pb -> next;
+        } else {
+            ListInsert(c, pos, &ea);
+            pa = pa -> next;
+        }
+        pos++;
+    }
+
+    LNode *p = pa? pa: pb;
+    while (p) {
+        ListInsert(c, pos, &(p->data));
+        p = p -> next;
+        pos++;
+    }   
 }
