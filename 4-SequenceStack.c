@@ -62,6 +62,7 @@ Status StackEmpty(SeqStack *s) {
 }
 
 int StackLength(SeqStack *s) {
+    if (!s) return ERROR;
     return s->top;
 }
 

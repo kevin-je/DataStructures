@@ -10,6 +10,11 @@
 #define TRUE   1
 #define FALSE  0
 
+// 函数声明
+Status StackEmpty(LinkStack s);
+Status Push(LinkStack *s, ElemType *e);
+Status Pop(LinkStack *s, ElemType *e);
+
 // 定义结构体
 typedef struct StackNode {
     ElemType e;
