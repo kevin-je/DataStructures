@@ -1,8 +1,12 @@
+// 头文件守卫
+#ifndef SEQSTACK_H
+#define SEQSTACK_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #define StackSize 16
-#define ElemType int
+#define ElemType void*
 #define Status   int
 
 // 异常处理
@@ -14,6 +18,7 @@
 #define UNDERFLOW -1
 
 // 定义结构体
+
 typedef struct SeqStack {
     ElemType data[StackSize];
     int top;
@@ -29,9 +34,7 @@ Status Push(SeqStack *s, ElemType *e);
 Status Pop(SeqStack *s, ElemType *e);
 Status GetTop(SeqStack *s, ElemType *e);
 
-// 主程序
 int main() {
-
     return 0;
 }
 
@@ -90,3 +93,5 @@ Status GetTop(SeqStack *s, ElemType *e) {
     *e = s->data[s->top-1];
     return OK;
 }
+
+#endif
