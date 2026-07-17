@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "SeqQueue.h"
 
 #define MAXVEXNUM 256
 #define MAXINT    2147483647
@@ -115,4 +116,29 @@ void DFSTraverse(ALGraph *g, int start, int *visited) {
         if (!visited[p->adjvex]) DFSTraverse(g, p->adjvex, visited);
         p = p->next;
     }
+}
+
+Status BFSTraverse(ALGraph *g, int start, int *visited) {
+    if (!g || start < 0) return ERROR;
+    if (start > g->vexnum) return ERROR;
+
+    SeqQueue q; InitQueue(&q);
+    visited[start] = 1;
+
+    int i = start, j;
+    ArcNode *p;
+    while (i == start || !QueueEmpty(&q)) {
+        printf("%c ", g->vexlist[i].vertex);
+
+        p = g->vexlist[i].firstarc;
+        while (p) {
+            if (!visited[p->adjvex]) {
+                EnQueue(&q, &p->adjvex);
+                visited[p->adjvex] = 1;
+            }
+            p = p->next;
+        }
+        DeQueue(&q, &i);
+    }
+    return OK;
 }

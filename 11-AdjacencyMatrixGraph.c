@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SeqStack.h"
+#include "SeqQueue.h"
 
 #define MAXVEXNUM 256
 #define MAXINT    2147483647
@@ -149,4 +150,25 @@ void DFSTraverse(AMGraph *g, int start, int *visited) {
         if (g->arc[start][j] && !visited[j])
         DFSTraverse(g, j, visited);
     }
+}
+
+Status BFSTraverse(AMGraph *g, int start, int *visited) {
+    if (!g || start < 0) return ERROR;
+    if (start > g->vexnum-1) return ERROR;
+    
+    SeqQueue q; InitQueue(&q);
+    int i = start, j;
+    visited[start] = 1;
+    while (i == start || !QueueEmpty(&q)) {
+        printf("%c ", g->vertex[i]);
+
+        for (j = 0; j < g->vexnum; j++) {
+            if (g->arc[i][j] && !visited[j]) {
+                EnQueue(&q, &j);
+                visited[j] = 1;
+            }
+        }
+        DeQueue(&q, &i);
+    }
+    return OK;
 }
