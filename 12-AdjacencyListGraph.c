@@ -105,3 +105,14 @@ Status CreateUDN(ALGraph *g) {
     g->arcnum = arcnum / 2;
     return OK;
 }
+
+void DFSTraverse(ALGraph *g, int start, int *visited) {
+    printf("%c ", g->vexlist[start].vertex);
+    visited[start] = 1;
+
+    ArcNode *p = g->vexlist[start].firstarc;
+    while(p) {
+        if (!visited[p->adjvex]) DFSTraverse(g, p->adjvex, visited);
+        p = p->next;
+    }
+}
